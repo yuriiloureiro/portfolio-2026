@@ -1,44 +1,48 @@
 "use client";
+
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext"; // Importe o hook
 
 export default function Contact() {
+  const { t } = useLanguage(); // Pegue as traduções
+
   return (
-    <section id="contact" className="py-24 px-6 relative overflow-hidden">
-      {/* Outro efeito de brilho para o fundo */}
-      <div className="absolute bottom-0 left-1/2 -z-10 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-accent/5 blur-[100px]" />
-
-      <div className="max-w-4xl mx-auto text-center">
+    <section id="contact" className="w-full px-2 py-1">
+      {/* Bloco Azul de Impacto Traduzido */}
+      <div className="w-full bg-primary rounded-[2.5rem] py-24 md:py-40 px-6 flex flex-col items-center justify-center relative overflow-hidden text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-3xl border border-white/10 bg-white/5 p-12 backdrop-blur-sm"
+          className="z-10 flex flex-col items-center"
         >
-          <h2 className="text-4xl font-bold md:text-6xl mb-6">
-            Ready to start a <br />
-            <span className="text-accent italic">new project?</span>
-          </h2>
-          <p className="text-white/60 text-lg mb-10 max-w-xl mx-auto">
-            I&apos;m currently available for freelance work and full-time positions. 
-            Let&apos;s build something extraordinary together.
-          </p>
+          <span className="text-white/70 font-mono text-[10px] uppercase tracking-[0.3em] font-bold mb-8">
+            {t.contact.label}
+          </span>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <a 
-              href="mailto:loureiroyurijobs@gmail.com" 
-              className="group relative inline-flex items-center justify-center rounded-full bg-accent px-8 py-4 text-sm font-bold text-black transition-all hover:shadow-[0_0_30px_rgba(212,255,0,0.4)] active:scale-95"
-            >
-              Send me an Email
-            </a>
-            <a 
-              href="https://www.linkedin.com/in/loureiroyuri" 
-              target="_blank"
-              className="text-white/60 hover:text-white font-medium transition-colors"
-            >
-              LinkedIn →
-            </a>
-          </div>
+          <h2 className="text-4xl md:text-8xl font-bold text-white tracking-tighter leading-[0.9] mb-12 max-w-4xl">
+            {t.contact.title} <br />
+            <span className="italic font-light opacity-90 text-white/80">
+              {t.contact.title_italic}
+            </span>
+          </h2>
+
+          {/* Botão de Email Traduzido */}
+          <a
+            href="mailto:seuemail@exemplo.com"
+            className="group bg-white text-primary px-10 py-6 rounded-full font-bold text-sm uppercase tracking-widest flex items-center gap-4 hover:scale-105 transition-all shadow-2xl shadow-primary/20"
+          >
+            {t.contact.cta}
+            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+              <ArrowRight size={18} />
+            </div>
+          </a>
         </motion.div>
+
+        {/* Efeitos de fundo */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-white/10 blur-[120px] rounded-full" />
       </div>
     </section>
   );

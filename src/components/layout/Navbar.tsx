@@ -1,37 +1,76 @@
-import Link from "next/link";
-import Logo from "../ui/Logo";
+"use client";
+
+import { motion } from "framer-motion";
+import { Globe } from "lucide-react";
+import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">
-      <nav className="flex w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-5 py-3 backdrop-blur-md">
-        
-        <Link href="/" className="flex items-center gap-3 group">
-          <Logo />
-          <span className="text-sm font-semibold tracking-[0.2em] text-white/90 hidden md:block group-hover:text-accent transition-colors">
-            YURI <span className="text-accent">LOUREIRO</span>
-          </span>
-        </Link>
+  const { language, t, toggleLanguage } = useLanguage();
 
-        <div className="hidden items-center gap-8 md:flex">
-          <Link href="#about" className="text-sm text-white/60 hover:text-accent transition-colors">
-            About
-          </Link>
-          <Link href="#projects" className="text-sm text-white/60 hover:text-accent transition-colors">
-            Projects
-          </Link>
-          <Link href="#contact" className="text-sm text-white/60 hover:text-accent transition-colors">
-            Contact
-          </Link>
+  return (
+    <header className="w-full px-2 pt-2">
+      <motion.nav
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full flex justify-between items-center px-8 py-5 bg-white border border-border rounded-[2rem] shadow-md"
+      >
+        {/* Logo - Versão Limpa */}
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-110">
+            <Image
+              src="/logo-yuri-loureiro.png"
+              alt="Yuri Loureiro Logo"
+              width={40} // Aumentei um pouco para ocupar o espaço sem o fundo
+              height={40}
+              className="object-contain"
+            />
+          </div>
+          <span className="font-bold text-foreground tracking-tight hidden sm:block uppercase text-sm">
+            Yuri <span className="text-primary">Loureiro</span>
+          </span>
         </div>
 
-        <Link
-          href="#contact"
-          className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-black transition-transform hover:scale-105 active:scale-95"
-        >
-          Let&apos;s Talk
-        </Link>
-      </nav>
+        {/* Links */}
+        <div className="hidden md:flex items-center gap-2">
+          {[
+            { label: t.nav.about, href: "#about" },
+            { label: t.nav.portfolio, href: "#portfolio" },
+            { label: t.nav.services, href: "#services" },
+          ].map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="px-5 py-2 text-[10px] uppercase tracking-[0.15em] font-bold text-muted hover:text-primary hover:bg-primary/5 rounded-full transition-all"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Ações */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleLanguage}
+            className="flex items-center gap-2 px-4 py-2 border border-border rounded-full hover:border-primary/30 transition-all group"
+          >
+            <Globe
+              size={14}
+              className="text-muted group-hover:text-primary transition-colors"
+            />
+            <span className="text-[10px] font-bold text-muted group-hover:text-primary uppercase tracking-widest">
+              {language}
+            </span>
+          </button>
+
+          <a
+            href="#contact"
+            className="border border-primary/20 text-primary px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-primary hover:text-white transition-all"
+          >
+            {t.nav.cta}
+          </a>
+        </div>
+      </motion.nav>
     </header>
   );
 }

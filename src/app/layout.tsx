@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Syne } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import { LanguageProvider } from "@/context/LanguageContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+});
 
 export const metadata: Metadata = {
   title: "Yuri Loureiro | Portfolio",
-  description: "High Performance Web Developer",
+  description: "Full Stack Developer",
 };
 
 export default function RootLayout({
@@ -17,9 +27,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-background text-foreground antialiased`}>
-        <Navbar />
-        {children}
+      <body
+        className={`${inter.variable} ${syne.variable} bg-background text-foreground antialiased relative`}
+      >
+        <div className="fixed inset-0 -z-10 bg-grid-pattern" />
+        <LanguageProvider>
+          <Navbar />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
