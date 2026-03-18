@@ -82,6 +82,22 @@ type Translations = {
     faq_q4: string;
     faq_a4: string;
   };
+  contact_page: {
+    left_title_line1: string;
+    left_title_line2: string;
+    left_title_line3: string;
+    email_label: string;
+    phone_label: string;
+
+    form_title: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    service: string;
+    service_placeholder: string;
+    message: string;
+    submit: string;
+  };
 };
 
 const translations: Record<Language, Translations> = {
@@ -192,6 +208,22 @@ const translations: Record<Language, Translations> = {
       faq_a4:
         "Depende da complexidade, mas um MVP funcional geralmente leva de 4 a 6 semanas, priorizando sempre a qualidade do código.",
     },
+    contact_page: {
+      left_title_line1: "Conecte-se comigo",
+      left_title_line2: "e traga sua",
+      left_title_line3: "visão à vida!",
+      email_label: "hello@yuriloureiro.com",
+      phone_label: "+351 912 448 530",
+
+      form_title: "Vamos conversar",
+      full_name: "Nome completo",
+      email: "E-mail",
+      phone: "Telefone",
+      service: "Selecione um serviço",
+      service_placeholder: "Escolha uma opção",
+      message: "Mensagem",
+      submit: "Enviar mensagem",
+    },
   },
 
   en: {
@@ -300,6 +332,22 @@ const translations: Record<Language, Translations> = {
       faq_q4: "What is the average delivery time?",
       faq_a4:
         "It depends on the complexity, but a functional MVP usually takes 4 to 6 weeks, always prioritizing code quality.",
+    },
+    contact_page: {
+      left_title_line1: "Connect with me",
+      left_title_line2: "and bring your",
+      left_title_line3: "vision to life!",
+      email_label: "hello@yuriloureiro.com",
+      phone_label: "+351 912 448 530",
+
+      form_title: "Get in touch",
+      full_name: "Full name",
+      email: "Email",
+      phone: "Phone",
+      service: "Select a service",
+      service_placeholder: "Choose an option",
+      message: "Message",
+      submit: "Send a message",
     },
   },
 };
