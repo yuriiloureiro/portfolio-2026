@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Globe } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
@@ -15,13 +16,13 @@ export default function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full flex justify-between items-center px-8 py-5 bg-white border border-border rounded-[2rem] shadow-md"
       >
-        {/* Logo - Versão Limpa */}
-        <div className="flex items-center gap-3 group cursor-pointer">
+        {/* Logo - Clica e volta para Home */}
+        <Link href="/" className="flex items-center gap-3 group cursor-pointer">
           <div className="relative w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-110">
             <Image
               src="/logo-yuri-loureiro.png"
               alt="Yuri Loureiro Logo"
-              width={40} // Aumentei um pouco para ocupar o espaço sem o fundo
+              width={40}
               height={40}
               className="object-contain"
             />
@@ -29,22 +30,22 @@ export default function Navbar() {
           <span className="font-bold text-foreground tracking-tight hidden sm:block uppercase text-sm">
             Yuri <span className="text-primary">Loureiro</span>
           </span>
-        </div>
+        </Link>
 
-        {/* Links */}
+        {/* Links de Navegação */}
         <div className="hidden md:flex items-center gap-2">
           {[
-            { label: t.nav.about, href: "#about" },
-            { label: t.nav.portfolio, href: "#portfolio" },
-            { label: t.nav.services, href: "#services" },
+            { label: t.nav.about, href: "/about" },
+            { label: t.nav.portfolio, href: "/portfolio" },
+            { label: t.nav.services, href: "/services" },
           ].map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="px-5 py-2 text-[10px] uppercase tracking-[0.15em] font-bold text-muted hover:text-primary hover:bg-primary/5 rounded-full transition-all"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -63,12 +64,12 @@ export default function Navbar() {
             </span>
           </button>
 
-          <a
-            href="#contact"
+          <Link
+            href="/contact"
             className="border border-primary/20 text-primary px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-[0.15em] hover:bg-primary hover:text-white transition-all"
           >
             {t.nav.cta}
-          </a>
+          </Link>
         </div>
       </motion.nav>
     </header>

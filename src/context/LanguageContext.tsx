@@ -56,6 +56,32 @@ type Translations = {
   footer: {
     rights: string;
   };
+  about: {
+    hero_title: string;
+    hero_cta_portfolio: string;
+    hero_cta_services: string;
+    story_label: string;
+    story_title: string;
+    story_text: string;
+    values_label: string;
+    values_title: string;
+    value1_title: string;
+    value1_text: string;
+    value2_title: string;
+    value2_text: string;
+    value3_title: string;
+    value3_text: string;
+    faq_label: string;
+    faq_title: string;
+    faq_q1: string;
+    faq_a1: string;
+    faq_q2: string;
+    faq_a2: string;
+    faq_q3: string;
+    faq_a3: string;
+    faq_q4: string;
+    faq_a4: string;
+  };
 };
 
 const translations: Record<Language, Translations> = {
@@ -133,6 +159,39 @@ const translations: Record<Language, Translations> = {
     footer: {
       rights: "Todos os direitos reservados.",
     },
+    about: {
+      hero_title: "Mentes Apaixonadas, Soluções Inspiradoras",
+      hero_cta_portfolio: "Nosso Portfólio",
+      hero_cta_services: "Nossos Serviços",
+      story_label: "Nossa História",
+      story_title: "As Crônicas de Yuri",
+      story_text:
+        "Desenvolvedor Full Stack apaixonado por transformar ideias complexas em interfaces intuitivas e códigos de alta performance. Com foco em tecnologias modernas como Next.js e Node.js, busco sempre o equilíbrio entre estética e funcionalidade.",
+      values_label: "Nossos Valores",
+      values_title: "O que nos move",
+      value1_title: "Inovação Constante",
+      value1_text:
+        "Sempre na fronteira das novas tecnologias para entregar o melhor.",
+      value2_title: "Qualidade de Código",
+      value2_text: "Código limpo, testado e fácil de manter a longo prazo.",
+      value3_title: "Foco no Usuário",
+      value3_text:
+        "Design e performance pensados para quem realmente usa o produto.",
+      faq_label: "Dúvidas Frequentes",
+      faq_title: "Perguntas comuns",
+      faq_q1: "Qual é a sua stack principal?",
+      faq_a1:
+        "Foco em ecossistema JavaScript/TypeScript, utilizando Next.js, React, Node.js e Tailwind CSS para interfaces de alta performance.",
+      faq_q2: "Como funciona o seu processo de trabalho?",
+      faq_a2:
+        "Trabalho de forma ágil, com entregas semanais, comunicação transparente via Slack/Discord e versionamento rigoroso no GitHub.",
+      faq_q3: "Você trabalha com projetos internacionais?",
+      faq_a3:
+        "Sim, estou preparado para atuar em times globais, com fluência técnica e adaptabilidade a diferentes fusos horários.",
+      faq_q4: "Qual o prazo médio de entrega?",
+      faq_a4:
+        "Depende da complexidade, mas um MVP funcional geralmente leva de 4 a 6 semanas, priorizando sempre a qualidade do código.",
+    },
   },
 
   en: {
@@ -207,6 +266,40 @@ const translations: Record<Language, Translations> = {
     },
     footer: {
       rights: "All rights reserved.",
+    },
+    about: {
+      hero_title: "Passionate Minds, Inspiring Solutions",
+      hero_cta_portfolio: "Our Portfolio",
+      hero_cta_services: "Our Services",
+      story_label: "Our Story",
+      story_title: "The Yuri Chronicles",
+      story_text:
+        "Full Stack Developer passionate about transforming complex ideas into intuitive interfaces and high-performance code. Focusing on modern technologies like Next.js and Node.js, I always seek the balance between aesthetics and functionality.",
+      values_label: "Our Values",
+      values_title: "What drives us",
+      value1_title: "Constant Innovation",
+      value1_text:
+        "Always at the frontier of new technologies to deliver the best.",
+      value2_title: "Code Quality",
+      value2_text:
+        "Clean, tested, and easy-to-maintain code for the long term.",
+      value3_title: "User Focus",
+      value3_text:
+        "Design and performance designed for those who actually use the product.",
+      faq_label: "FAQ",
+      faq_title: "Common questions",
+      faq_q1: "What is your main tech stack?",
+      faq_a1:
+        "I focus on the JavaScript/TypeScript ecosystem, using Next.js, React, Node.js, and Tailwind CSS for high-performance interfaces.",
+      faq_q2: "How does your workflow work?",
+      faq_a2:
+        "I work agilely, with weekly deliveries, transparent communication via Slack/Discord, and rigorous versioning on GitHub.",
+      faq_q3: "Do you work on international projects?",
+      faq_a3:
+        "Yes, I am prepared to work in global teams, with technical fluency and adaptability to different time zones.",
+      faq_q4: "What is the average delivery time?",
+      faq_a4:
+        "It depends on the complexity, but a functional MVP usually takes 4 to 6 weeks, always prioritizing code quality.",
     },
   },
 };

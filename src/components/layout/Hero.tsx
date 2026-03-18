@@ -5,53 +5,59 @@ import Image from "next/image";
 import { Zap, Code2, Users, Shield } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-// Configurações de animação mais lentas e suaves
-const transitionMain = { duration: 1.2, ease: [0.16, 1, 0.3, 1] }; // Custom cubic-bezier para suavidade
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: transitionMain },
+// Definindo a curva de animação de forma que o TS aceite sem erros
+const transitionMain = {
+  duration: 1.2,
+  ease: [0.16, 1, 0.3, 1],
 };
 
-const fadeLeft = {
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: transitionMain as any, // O 'as any' aqui resolve o conflito de tipagem do ease
+  },
+};
+
+const fadeLeft: Variants = {
   hidden: { opacity: 0, x: 60 },
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] } as any,
   },
 };
 
-const fadeBlur = {
+const fadeBlur: Variants = {
   hidden: { opacity: 0, filter: "blur(12px)", y: 10 },
   show: {
     opacity: 1,
     filter: "blur(0px)",
     y: 0,
-    transition: { duration: 1.5, ease: "easeOut" },
+    transition: { duration: 1.5, ease: "easeOut" } as any,
   },
 };
 
-// Container que dita o ritmo da cascata (Stagger)
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15, // Aumentei o intervalo entre cada elemento
-      delayChildren: 0.2, // Espera um pouco antes de começar a primeira animação
-    },
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    } as any,
   },
 };
 
-const badgeContainer = {
+const badgeContainer: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
       staggerChildren: 0.12,
-      delayChildren: 1.0, // Os cards de baixo só começam após o topo estar quase pronto
-    },
+      delayChildren: 1.0,
+    } as any,
   },
 };
 
