@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
-  const { language, t, toggleLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <header className="w-full px-2 pt-2">
@@ -52,7 +52,7 @@ export default function Navbar() {
         {/* Ações */}
         <div className="flex items-center gap-3">
           <button
-            onClick={toggleLanguage}
+            onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
             className="flex items-center gap-2 px-4 py-2 border border-border rounded-full hover:border-primary/30 transition-all group"
           >
             <Globe

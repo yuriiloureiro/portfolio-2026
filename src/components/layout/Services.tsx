@@ -1,7 +1,8 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
-import { Code2, Smartphone, Database, Box } from "lucide-react";
+import { Code2, Smartphone, Database, Box, Layers } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext"; // Importe o hook
 
 export default function Services() {
@@ -12,11 +13,7 @@ export default function Services() {
     { icon: <Box size={24} />, className: "md:col-span-8", bgIcon: true },
     { icon: <Code2 size={24} />, className: "md:col-span-4", bgIcon: false },
     { icon: <Database size={24} />, className: "md:col-span-4", bgIcon: false },
-    {
-      icon: <Smartphone size={24} />,
-      className: "md:col-span-8",
-      bgIcon: false,
-    },
+    { icon: <Layers size={24} />, className: "md:col-span-8", bgIcon: true },
   ];
 
   return (
@@ -75,8 +72,14 @@ export default function Services() {
 
               {/* Marca d'água decorativa */}
               {serviceIcons[index].bgIcon && (
-                <div className="absolute top-10 right-10 opacity-[0.03] text-foreground group-hover:opacity-[0.06] transition-opacity">
-                  <Box size={200} strokeWidth={1} />
+                <div className="absolute -top-10 -right-10 opacity-[0.03] text-foreground group-hover:opacity-[0.06] transition-all duration-700 group-hover:scale-110">
+                  {React.cloneElement(
+                    serviceIcons[index].icon as React.ReactElement<{
+                      size?: number;
+                      strokeWidth?: number;
+                    }>,
+                    { size: 320, strokeWidth: 1 },
+                  )}
                 </div>
               )}
             </motion.div>
