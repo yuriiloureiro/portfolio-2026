@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import RevealText from "@/components/animations/RevealText"; // <-- adicione isto (ajuste o caminho se necessário)
 
 export default function AboutStory() {
   const { t } = useLanguage();
@@ -12,8 +13,9 @@ export default function AboutStory() {
         <span className="px-4 py-1.5 bg-primary/5 border border-primary/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-6">
           {t.about.story_label}
         </span>
-        <h2 className="text-4xl md:text-6xl text-foreground font-syne font-semibold tracking-tighter">
-          {t.about.story_title}
+
+        <h2 className="text-5xl md:text-7xl font-syne font-semibold tracking-tighter max-w-[15ch] md:max-w-[20ch]">
+          <RevealText text={t.about.story_title} delayPerChar={0.02} />
         </h2>
       </div>
 
@@ -37,12 +39,10 @@ export default function AboutStory() {
           viewport={{ once: true }}
           className="md:col-span-5 bg-primary rounded-[2.5rem] flex items-center justify-center min-h-[300px] relative overflow-hidden"
         >
-          {/* Aqui você pode colocar um ícone grande ou sua logo em branco */}
           <div className="w-32 h-32 border-4 border-white/20 rounded-full flex items-center justify-center">
             <div className="w-16 h-16 bg-white rounded-full animate-pulse" />
           </div>
 
-          {/* Glow decorativo */}
           <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 blur-3xl rounded-full" />
         </motion.div>
       </div>

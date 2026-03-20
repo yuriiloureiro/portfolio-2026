@@ -1,11 +1,14 @@
 "use client";
 
+import React from "react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Zap, Code2, Users, Shield } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import Magnetic from "@/components/animations/Magnetic";
+import RevealText from "@/components/animations/RevealText";
 
-// Definindo a curva de animação de forma que o TS aceite sem erros
 const transitionMain = {
   duration: 1.2,
   ease: [0.16, 1, 0.3, 1],
@@ -16,7 +19,7 @@ const fadeUp: Variants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: transitionMain as any, // O 'as any' aqui resolve o conflito de tipagem do ease
+    transition: transitionMain as any,
   },
 };
 
@@ -74,41 +77,59 @@ export default function Hero() {
           animate="show"
           className="md:col-span-7 bg-primary rounded-[1.5rem] p-8 md:p-16 flex flex-col justify-center min-h-[500px] relative overflow-hidden"
         >
-          {/* Título - Primeiro a entrar */}
+          {/* Título - Reveal letra por letra */}
           <motion.h1
             variants={fadeUp}
-            className="text-4xl md:text-7xl text-white leading-[0.9] tracking-tighter max-w-2xl font-syne font-semibold z-10"
+            className="text-4xl md:text-7xl text-white leading-[1.1] md:leading-[0.9] tracking-tighter max-w-2xl font-syne font-semibold z-10"
           >
-            {t.hero.title}
+            <RevealText
+              text={t.hero.title}
+              className="w-full"
+              delayPerChar={0.02}
+            />
           </motion.h1>
 
-          {/* Subtítulo - Entra logo depois com blur suave */}
+          {/* Subtítulo - reveal ao entrar em view (mais sutil) */}
           <motion.p
             variants={fadeBlur}
-            className="mt-6 text-sm md:text-base text-white/80 max-w-xl font-medium z-10"
+            className="mt-6 text-sm md:text-base text-white/80 max-w-xl font-medium z-10 leading-relaxed"
           >
             {t.hero.subtitle}
           </motion.p>
 
           {/* Botões - Entram um por um */}
           <div className="flex flex-wrap gap-4 z-10 mt-10">
-            <motion.button
-              variants={fadeUp}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="bg-white text-primary px-8 py-4 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold shadow-xl"
-            >
-              {t.hero.cta_primary}
-            </motion.button>
+            <Magnetic strength={0.28}>
+              <motion.div
+                variants={fadeUp}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Link
+                  href="/portfolio"
+                  aria-label={t.hero.cta_primary}
+                  className="bg-white text-primary px-8 py-4 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold shadow-xl inline-flex items-center justify-center"
+                >
+                  {t.hero.cta_primary}
+                </Link>
+              </motion.div>
+            </Magnetic>
 
-            <motion.button
-              variants={fadeUp}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="border border-white/30 text-white px-8 py-4 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold hover:bg-white/10 transition-colors"
-            >
-              {t.hero.cta_secondary}
-            </motion.button>
+            <Magnetic strength={0.22}>
+              <motion.div
+                variants={fadeUp}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Link
+                  href="/about"
+                  aria-label={t.hero.cta_secondary}
+                  className="border border-white/30 text-white px-8 py-4 rounded-full text-[10px] uppercase tracking-[0.18em] font-bold hover:bg-white/10 transition-colors inline-flex items-center justify-center"
+                >
+                  {t.hero.cta_secondary}
+                </Link>
+              </motion.div>
+            </Magnetic>
           </div>
 
           {/* Glow de fundo - Surge bem devagar */}
@@ -133,7 +154,7 @@ export default function Hero() {
             initial={{ scale: 1.1, x: -10 }}
             animate={{ scale: 1.15, x: 10, y: [0, -5, 0] }}
             transition={{
-              duration: 25, // Ainda mais lento o movimento da foto
+              duration: 25,
               repeat: Infinity,
               repeatType: "reverse",
               ease: "easeInOut",
@@ -196,23 +217,25 @@ export default function Hero() {
               key={i}
               variants={fadeUp}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="bg-white border border-border p-6 rounded-[1.5rem] flex flex-col items-center text-center gap-3 hover:border-primary/30 hover:shadow-lg transition-all group cursor-default"
+              className="bg-white border border-border p-6 rounded-[1.5rem] flex flex-col items-center text-center gap-3 hover:border-primary/30 hover:shadow-lg transition-all group"
             >
-              <motion.div
-                className="text-primary"
-                whileHover={{ scale: 1.2, rotate: 8 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {item.icon}
-              </motion.div>
-              <div>
-                <h3 className="text-[13px] text-foreground leading-tight font-syne font-semibold">
-                  {item.title}
-                </h3>
-                <p className="text-[10px] text-muted mt-1 font-medium">
-                  {item.sub}
-                </p>
-              </div>
+              <Magnetic strength={0.14}>
+                <motion.div
+                  className="text-primary"
+                  whileHover={{ scale: 1.12, rotate: 6 }}
+                  transition={{ type: "spring", stiffness: 260 }}
+                >
+                  {item.icon}
+                </motion.div>
+                <div>
+                  <h3 className="text-[13px] text-foreground leading-tight font-syne font-semibold">
+                    {item.title}
+                  </h3>
+                  <p className="text-[10px] text-muted mt-1 font-medium">
+                    {item.sub}
+                  </p>
+                </div>
+              </Magnetic>
             </motion.div>
           ))}
         </motion.div>

@@ -3,6 +3,7 @@ import { Inter, Syne } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { LanguageProvider } from "@/context/LanguageContext";
+import CustomCursor from "@/components/ui/CustomCursos";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <div className="fixed inset-0 -z-10 bg-grid-pattern" />
         <LanguageProvider>
+          <CustomCursor />
           <Navbar />
           {children}
         </LanguageProvider>
