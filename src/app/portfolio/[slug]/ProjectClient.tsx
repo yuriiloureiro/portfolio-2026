@@ -20,42 +20,49 @@ const projectColors: Record<string, string> = {
   "caixinha-2026": "#4f46e5",
 };
 
-// utilitário simples para gerar slugs previsíveis
+// MAPEAMENTO DE PASTAS: Liga o ID do projeto ao nome da pasta real na public/projects
+const projectFolderMap: Record<string, string> = {
+  "anna-psicologia": "annapsi",
+  "to-por-ai-no-mundo": "chico",
+  "maiara-psicologia": "maiarapsi",
+  auramax: "auramax",
+  scaramuzzi: "scaramuzzi",
+  "caixinha-2026": "caixinha-2026",
+};
+
+// MAPEAMENTO DE SUFIXOS: Caso o nome do arquivo use um sufixo diferente do ID
+const projectSuffixMap: Record<string, string> = {
+  "anna-psicologia": "annapsi",
+  "to-por-ai-no-mundo": "chico",
+  "maiara-psicologia": "maiarapsi",
+  "caixinha-2026": "caixinha2026",
+};
+
 function slugify(str?: string) {
   if (!str) return "";
   return str
     .toString()
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
 
-/**
- * ImageLoader tries a list of src candidates and returns the first that successfully loads.
- * Renders a placeholder while trying to load candidates.
- */
 function ImageLoader({
   candidates,
   alt,
   className,
   style,
-  width,
-  height,
 }: {
   candidates: string[];
   alt: string;
   className?: string;
   style?: React.CSSProperties;
-  width?: number;
-  height?: number;
 }) {
   const [src, setSrc] = useState<string | null>(null);
-
   useEffect(() => {
     let mounted = true;
-
     (async () => {
       for (const candidate of candidates) {
         try {
@@ -69,141 +76,119 @@ function ImageLoader({
           setSrc(candidate);
           return;
         } catch {
-          // next candidate
+          /* next */
         }
       }
       if (mounted) setSrc(null);
     })();
-
     return () => {
       mounted = false;
     };
-    // stringify so effect runs when candidates array content changes
   }, [JSON.stringify(candidates)]);
 
-  // loading or none found -> placeholder
-  if (!src) {
+  if (!src)
     return (
       <div
-        className={`w-full h-full bg-slate-100 ${className || ""}`}
+        className={`w-full h-full bg-slate-100 animate-pulse ${className || ""}`}
         style={style}
         aria-hidden
       />
     );
-  }
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      style={style}
-      width={width}
-      height={height}
-    />
-  );
+  return <img src={src} alt={alt} className={className} style={style} />;
 }
 
 export default function ProjectClient({ slug }: Props) {
   const { t } = useLanguage();
   const projectDetails = (t as any).project_details || {};
-
-  // Resolve key robustamente: slug direto, slugified key, slugified title
   const decodedSlug = slug ? decodeURIComponent(slug) : "";
-  let resolvedKey: string | undefined = Object.prototype.hasOwnProperty.call(
+
+  let resolvedKey = Object.prototype.hasOwnProperty.call(
     projectDetails,
     decodedSlug,
   )
     ? decodedSlug
     : undefined;
-
-  if (!resolvedKey) {
+  if (!resolvedKey)
     resolvedKey = Object.keys(projectDetails).find(
       (k) => slugify(k) === decodedSlug,
     );
-  }
-
-  if (!resolvedKey) {
+  if (!resolvedKey)
     resolvedKey = Object.keys(projectDetails).find(
-      (k) =>
-        slugify((projectDetails[k] && projectDetails[k].title) || "") ===
-        decodedSlug,
+      (k) => slugify(projectDetails[k]?.title || "") === decodedSlug,
     );
-  }
 
   const project = resolvedKey ? (projectDetails as any)[resolvedKey] : null;
   const bgColor = resolvedKey
     ? projectColors[resolvedKey] || "#4f46e5"
     : "#4f46e5";
 
-  // Se não encontrou, mostra mensagem com slug tentado
-  if (!project) {
+  if (!project || !resolvedKey) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background font-syne p-10">
-        <h1 className="text-4xl font-bold mb-4">Projeto não encontrado</h1>
-        <p className="text-muted mb-8 text-center">
-          O slug{" "}
-          <span className="font-mono bg-slate-100 px-2 py-1 rounded">
-            "{decodedSlug || "vazio"}"
-          </span>{" "}
-          não corresponde a nenhum projeto.
-        </p>
-
-        <ul className="text-sm space-y-1 mb-6">
-          {Object.keys(projectDetails).map((k) => (
-            <li key={k} className="text-primary/90">
-              {k} — (slug: <span className="font-mono">{slugify(k)}</span>)
-            </li>
-          ))}
-        </ul>
-
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-10">
+        <h1 className="text-4xl font-bold mb-4 font-syne">
+          Projeto não encontrado
+        </h1>
         <Link
           href="/portfolio"
-          className="h-12 px-8 rounded-full bg-primary text-white flex items-center gap-2 hover:scale-105 transition-transform"
+          className="h-12 px-8 rounded-full bg-primary text-white flex items-center gap-2"
         >
-          <ArrowLeft size={18} /> Voltar ao Portfólio
+          <ArrowLeft size={18} /> Voltar
         </Link>
       </div>
     );
   }
 
-  // A partir daqui sabemos que resolvedKey está definido (project existe).
-  const rk = resolvedKey as string;
-  const keyNoDash = rk.replace(/-/g, "");
-  const folderBase = `/projects/${rk}`; // ex: /projects/caixinha-2026
+  // Lógica de caminhos baseada nas suas pastas reais
+  const folderName = projectFolderMap[resolvedKey] || resolvedKey;
+  const suffix = projectSuffixMap[resolvedKey] || resolvedKey;
+  const folderBase = `/projects/${folderName}`;
 
-  // candidatos de caminho cobrindo as variações que você descreveu
+  // candidatos mais abrangentes (.webp, .jpg, .png e variações)
   const coverCandidates = [
-    `${folderBase}/cover-${rk}.webp`,
-    `${folderBase}/cover-${keyNoDash}.webp`,
+    `${folderBase}/cover-${suffix}.webp`,
+    `${folderBase}/cover-${suffix}.jpg`,
+    `${folderBase}/cover-${suffix}.png`,
+    `${folderBase}/cover-${resolvedKey}.webp`,
+    `${folderBase}/cover-${resolvedKey}.jpg`,
+    `${folderBase}/cover-${resolvedKey}.png`,
     `${folderBase}/cover.webp`,
-    `${folderBase}/${rk}.webp`,
-    `${folderBase}.webp`,
-    `/projects/cover-${rk}.webp`,
-    `/projects/${rk}.webp`,
+    `${folderBase}/cover.jpg`,
+    `${folderBase}/cover.png`,
+    `${folderBase}/${suffix}.webp`,
+    `${folderBase}/${suffix}.jpg`,
+    `${folderBase}/${suffix}.png`,
+    `${folderBase}/${resolvedKey}.webp`,
+    `${folderBase}/${resolvedKey}.jpg`,
+    `${folderBase}/${resolvedKey}.png`,
   ];
 
   const screenCandidates = [
-    `${folderBase}/screen-${rk}.webp`,
-    `${folderBase}/screen-${keyNoDash}.webp`,
+    `${folderBase}/screen-${suffix}.webp`,
+    `${folderBase}/screen-${suffix}.jpg`,
+    `${folderBase}/screen-${suffix}.png`,
     `${folderBase}/screen.webp`,
-    `${folderBase}/${rk}-screen.webp`,
-    `/projects/${rk}-screen.webp`,
-    `${folderBase}/screen.webp`,
+    `${folderBase}/screen.jpg`,
+    `${folderBase}/screen.png`,
+    `${folderBase}/${suffix}-screen.webp`,
+    `${folderBase}/${suffix}-screen.jpg`,
+    `${folderBase}/${suffix}-screen.png`,
   ];
 
   const collageCandidates = [
-    `${folderBase}/collage-${rk}.webp`,
-    `${folderBase}/collage-${keyNoDash}.webp`,
+    `${folderBase}/collage-${suffix}.webp`,
+    `${folderBase}/collage-${suffix}.jpg`,
+    `${folderBase}/collage-${suffix}.png`,
     `${folderBase}/collage.webp`,
-    `${folderBase}/${rk}-collage.webp`,
-    `/projects/${rk}-collage.webp`,
-    `${folderBase}/collage.webp`,
+    `${folderBase}/collage.jpg`,
+    `${folderBase}/collage.png`,
+    `${folderBase}/${suffix}-collage.webp`,
+    `${folderBase}/${suffix}-collage.jpg`,
+    `${folderBase}/${suffix}-collage.png`,
   ];
 
   return (
     <main className="min-h-screen bg-background pt-2">
-      {/* HERO: cover inside colored rounded block */}
+      {/* HERO SECTION */}
       <section className="w-full px-2 pb-2">
         <div
           style={{ backgroundColor: bgColor }}
@@ -211,11 +196,9 @@ export default function ProjectClient({ slug }: Props) {
         >
           <div className="max-w-4xl text-center mb-8 px-4">
             <FadeIn delay={0.05}>
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="px-5 py-1.5 rounded-full bg-white/10 backdrop-blur-xl text-white text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10">
-                  {project.category} — {project.type}
-                </span>
-              </div>
+              <span className="px-5 py-1.5 rounded-full bg-white/10 backdrop-blur-xl text-white text-[10px] font-bold uppercase tracking-[0.2em] border border-white/10 mb-6 inline-block">
+                {project.category} — {project.type}
+              </span>
             </FadeIn>
 
             <FadeIn delay={0.15}>
@@ -225,29 +208,34 @@ export default function ProjectClient({ slug }: Props) {
             </FadeIn>
 
             <FadeIn delay={0.25}>
-              <div className="flex gap-4 justify-center mb-10">
-                <a
-                  href={project.live_url || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-12 md:h-14 px-8 rounded-full bg-white text-black font-bold text-[10px] uppercase tracking-widest inline-flex items-center gap-3 hover:scale-105 transition-transform shadow-xl"
-                >
-                  {(t as any).project_page?.view_live || "View Live Project"}{" "}
-                  <ExternalLink size={14} />
-                </a>
-              </div>
+              <a
+                href={project.live_url || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-12 md:h-14 px-8 rounded-full bg-white text-black font-bold text-[10px] uppercase tracking-widest inline-flex items-center gap-3 hover:scale-105 transition-transform shadow-xl mb-10"
+              >
+                {(t as any).project_page?.view_live || "View Live Project"}{" "}
+                <ExternalLink size={14} />
+              </a>
             </FadeIn>
           </div>
 
-          <div className="w-full px-4 md:px-12 mb-12">
+          {/* COVER: centered, full-image, floating inside the colored block */}
+          <div className="w-full px-4 md:px-12">
             <FadeIn delay={0.45} duration={1.0} className="w-full">
-              <div className="relative w-full rounded-t-[2rem] overflow-hidden shadow-2xl">
-                <div className="w-full">
-                  <ImageLoader
-                    candidates={coverCandidates}
-                    alt={`${project.title} — cover`}
-                    className="w-full h-auto block"
-                  />
+              <div className="relative w-full rounded-t-[2rem] overflow-visible shadow-2xl">
+                {/* Grid maior colorido já envolve este bloco (bgColor) */}
+                <div className="mx-auto w-full max-w-6xl px-4 md:px-8 py-6 md:py-10">
+                  {/* Wrapper que faz a imagem “flutuar” com um pequeno negative margin no mobile/desktop */}
+                  <div className="mx-auto w-full max-w-[1100px] -mt-6 md:-mt-12 rounded-xl overflow-hidden bg-transparent">
+                    <div className="w-full bg-transparent">
+                      <ImageLoader
+                        candidates={coverCandidates}
+                        alt={`${project.title} — cover`}
+                        className="w-full h-auto object-contain block"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </FadeIn>
@@ -255,7 +243,7 @@ export default function ProjectClient({ slug }: Props) {
         </div>
       </section>
 
-      {/* INFO SECTION: challenge / solution / tech */}
+      {/* INFO SECTION */}
       <section className="w-full px-2 pb-2">
         <div className="bg-white border border-border rounded-[2.5rem] p-10 md:p-24">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-24">
@@ -313,7 +301,7 @@ export default function ProjectClient({ slug }: Props) {
       {/* COLLAGE SECTION */}
       <section className="w-full px-2 pb-2">
         <FadeIn delay={0.15}>
-          <div className="relative w-full aspect-[21/9] rounded-[2.5rem] overflow-hidden border border-border">
+          <div className="relative w-full aspect-[16/10] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden border border-border">
             <ImageLoader
               candidates={collageCandidates}
               alt={`${project.title} — collage`}

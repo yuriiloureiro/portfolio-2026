@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Github } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -36,8 +37,11 @@ export default function Footer() {
   return (
     <footer className="w-full px-2 py-4">
       <div className="bg-white border border-border rounded-[2.5rem] p-12 md:p-20 flex flex-col items-center gap-10 text-center">
-        {/* Logo Centralizada */}
-        <div className="flex flex-col items-center gap-4 group cursor-pointer">
+        {/* Logo Clicável para Home */}
+        <Link
+          href="/"
+          className="flex flex-col items-center gap-4 group cursor-pointer"
+        >
           <div className="relative w-16 h-16 flex items-center justify-center transition-transform group-hover:scale-110">
             <Image
               src="/logo-yuri-loureiro.png"
@@ -50,26 +54,26 @@ export default function Footer() {
           <span className="font-bold text-foreground tracking-tight uppercase text-sm">
             Yuri <span className="text-primary">Loureiro</span>
           </span>
-        </div>
+        </Link>
 
-        {/* Links Rápidos */}
+        {/* Links Rápidos (ajustados para as rotas reais) */}
         <div className="flex items-center gap-8">
           {[
-            { label: t.nav.about, href: "#about" },
-            { label: t.nav.portfolio, href: "#portfolio" },
-            { label: t.nav.services, href: "#services" },
+            { label: t.nav.about, href: "/about" },
+            { label: t.nav.portfolio, href: "/portfolio" },
+            { label: t.nav.services, href: "/services" },
           ].map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="text-[11px] uppercase tracking-widest font-semibold text-muted hover:text-primary transition-colors"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
 
-        {/* Redes Sociais - Apenas Ícones */}
+        {/* Redes Sociais */}
         <div className="flex items-center gap-3">
           {socials.map((social) => (
             <a

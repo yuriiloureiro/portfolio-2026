@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function AboutHero() {
@@ -27,12 +28,19 @@ export default function AboutHero() {
         </motion.h1>
 
         <div className="flex flex-wrap justify-center gap-4 mt-12">
-          <button className="bg-white text-primary px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-transform">
+          <Link
+            href="/portfolio"
+            className="bg-white text-primary px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-transform inline-flex items-center justify-center"
+          >
             {t.about.hero_cta_portfolio}
-          </button>
-          <button className="border border-white/30 text-white px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
+          </Link>
+
+          <Link
+            href="/services"
+            className="border border-white/30 text-white px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors inline-flex items-center justify-center"
+          >
             {t.about.hero_cta_services}
-          </button>
+          </Link>
         </div>
       </div>
     </section>
