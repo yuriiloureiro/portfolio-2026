@@ -19,6 +19,14 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "Yuri Loureiro | Portfolio",
   description: "Full Stack Developer",
+  icons: {
+    icon: [
+      { url: "/favicon.webp", sizes: "32x32", type: "image/webp" },
+      { url: "/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
